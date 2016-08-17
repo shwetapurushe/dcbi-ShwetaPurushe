@@ -15,9 +15,9 @@
 	{
 		var dcbiCtrl = this;
 
-		dcbiCtrl.greeting = "Hello Dcbi!"
+		dcbiCtrl.greeting = "Hello Dcbi!";
 
-		//queryService.makeRequest();
+		queryService.makeRequest();
 	}
 
 })();//will be using the IIFE pattern through out project
