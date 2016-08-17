@@ -3,36 +3,63 @@
  */
 (function(){
 	"use strict";
-	angular.module('dcbiApp.data', []);
+	angular.module('dcbiApp.data', []);//registering the data module
 	angular.module('dcbiApp.data').service('dataService',dataService);
 
-	function dataService (){
+
+	dataService.$inject = ['$q'];
+	function dataService ($q){
 		var that = this;
-		that.geneCollection;
+		that.mutationMetrics;
+		that.copyNumberData;
 
 		/*this function processes the tabbed data format to give us a reusable json structure
 		* */
-		that.parseDataToObject = function(tabbedFormat)
+		that.parseDataToObject = function(tabbedFormat,type)
 		{
-			that.geneCollection = [];//flushing out for new loops
+			//var deferred = $q.defer();
+
+			console.log(tabbedFormat,type);
+			var geneCollection = [];//flushing out for new loops
 
 			//new lines//TODO figure out a way not to hard code this
 			var lines = tabbedFormat.split('\n');
 			var dataType = lines[0];
 			var metadata = lines[1];
 			var geneIds = lines[2].split('\t');
-			var mutations = lines[3].split('\t');
+			var values = lines[3].split('\t');
 
 			var geneCounter = geneIds.length;
 			for(var i = 0; i < geneCounter ; i++)
 			{
 				var obj = {};
 				obj.key = geneIds[i];
-				obj.value = mutations[i];
-				that.geneCollection[i] = obj;
+				obj.value = values[i];
+				geneCollection[i] = obj;
 			}
 
-			window.blah = _.filter(that.geneCollection, function(o){return !o.value.toString().match("NaN"); });
+			if(type == "mutation")
+			{
+				that.mutationMetrics  = {
+					validMutations : _.filter(geneCollection, function(o){return !o.value.toString().match("NaN"); }),
+					allGenes: geneCollection
+				};
+			}else if(type == "CCN"){
+				// todo: rather than multiple filter use single forloop to collect these information
+				that.copyNumberData  = {
+					deletedSingleCopy : _.filter(geneCollection, function(o){return o.value.toString().match("-1"); }),
+					deletedBothCopies : _.filter(geneCollection, function(o){return o.value.toString().match("-2"); }),
+					gainedBothCopies : _.filter(geneCollection, function(o){return o.value.toString().match("2"); }),
+					gainedSingleCopy : _.filter(geneCollection, function(o){return o.value.toString().match("1"); }),
+					noChange : _.filter(geneCollection, function(o){return o.value.toString().match("NA"); }),
+					allGenes: geneCollection
+				};
+			}
+
+
+			//deferred.resolve(mutationMetrics);
+
+			//return deferred.promise;
 
 		}
 	}

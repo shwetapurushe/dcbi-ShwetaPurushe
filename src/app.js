@@ -18,9 +18,15 @@
 	{
 		var dcbiCtrl = this;
 
-		dcbiCtrl.greeting = "Hello Dcbi!";
+		dcbiCtrl.gene = "";//empty string uninitiated
+		dcbiCtrl.type = "mutation";
+		dcbiCtrl.makeRequest = makeRequest;
 
-		queryService.makeRequest();
+		function makeRequest ()
+		{
+			queryService.makeRequest(dcbiCtrl.gene,dcbiCtrl.type);
+		}
+
 	}
 
 })();//will be using the IIFE pattern through out project

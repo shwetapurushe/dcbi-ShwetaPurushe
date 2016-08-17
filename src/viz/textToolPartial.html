@@ -1,0 +1,19 @@
+<div class="panel panel-default">
+	<div class="panel-heading">
+		<h3 class="panel-title">Text Report for {{inheritedgene}}</h3>
+	</div>
+	<div class="panel-body">
+		{{inheritedgene}} has {{ttController.dataService.mutationMetrics.validMutations.length}} mutated genes
+		<p>It is mutated in
+			{{(ttController.dataService.mutationMetrics.validMutations.length/ttController.dataService.mutationMetrics.allGenes.length)*100 |number:0}}%
+			of all cases.
+		</p>
+		<ul>
+			<li>Single Copy of Gene Deleted {{(ttController.dataService.copyNumberData.deletedSingleCopy.length/ttController.dataService.mutationMetrics.allGenes.length)*100 |number:0}}%</li>
+			<li>Single Copy of Gene Observed {{(ttController.dataService.copyNumberData.gainedSingleCopy.length/ttController.dataService.mutationMetrics.allGenes.length)*100 |number:0}}%</li>
+			<li>Both Copies of Gene Deleted {{(ttController.dataService.copyNumberData.deletedBothCopies.length/ttController.dataService.mutationMetrics.allGenes.length)*100 |number:0}}%</li>
+			<li>Both Copies of Gene Observed {{(ttController.dataService.copyNumberData.gainedBothCopies.length/ttController.dataService.mutationMetrics.allGenes.length)*100 |number:0}}%</li>
+			<li>No Change {{(ttController.dataService.copyNumberData.noChange.length/ttController.dataService.mutationMetrics.allGenes.length)*100 |number:0}}%</li>
+		</ul>
+	</div>
+</div>
