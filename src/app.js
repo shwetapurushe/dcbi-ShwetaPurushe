@@ -5,7 +5,10 @@
 	"use strict";
 
 	//creating the main app module (parent module)
-	angular.module('dcbiApp', ['dcbiApp.data']);
+	angular.module('dcbiApp', [
+								'dcbiApp.data',
+								'dcbiApp.viz'
+	]);
 
 	//main app controller (this is the parent of all controllers)
 	angular.module('dcbiApp').controller('dcbiAppController', dcbiAppController);

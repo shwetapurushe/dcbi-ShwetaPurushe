@@ -32,16 +32,7 @@
 				that.geneCollection[i] = obj;
 			}
 
-			//split by tab
-			/*var index = tabbedFormat.indexOf("TCGA");
-			var headers = tabbedFormat.substring(0, index);
-			var remainingContent = tabbedFormat.substring(index, tabbedFormat.length);
-
-			var untabbed = remainingContent.split('\t');
-			var regex = new RegExp('^TCGA[0-9a-z/-]*|/\n$');*/
-			//window.blah= _.filter(untabbed, function(o){ return o.toString().match(regex)});
-			//window.blah2 = _.filter(untabbed, function(o){ return !o.toString().match(regex) && !o.toString().includes("TP53")});
-
+			window.blah = _.filter(that.geneCollection, function(o){return !o.value.toString().match("NaN"); });
 
 		}
 	}
