@@ -2,6 +2,32 @@
 <html lang="en" ng-app="dcbiApp">
 <head>
 	<meta charset="UTF-8">
+
+	<style>
+
+		.bar {
+			fill: steelblue;
+		}
+
+		.bar:hover {
+			fill: brown;
+		}
+
+		.axis {
+			font: 10px sans-serif;
+		}
+
+		.axis path,
+		.axis line {
+			fill: none;
+			stroke: #000;
+			shape-rendering: crispEdges;
+		}
+
+		.x.axis path {
+			display: none;
+		}
+	</style>
 	<title>DCBI</title>
 
 	<link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css"/>
@@ -20,39 +46,46 @@
 							<input type="radio" name='type' ng-model="dcbiCtrl.type" value="mutation" aria-label="..."/>
 						</span>
 						<label type="text" class="form-control"  aria-label="...">Mutation</label>
-					</div><!-- /input-group -->
+					</div>
 				</div>
 
 				<div class="col-lg-3"><!--COPY NUMBER FORM-->
 					<div class="input-group">
 						<span class="input-group-addon">
-							<input type="radio" name='type' ng-model="dcbiCtrl.type" value="CCN" aria-label="..."/>
+							<input type="radio" name='type' ng-model="dcbiCtrl.type" value="ccn" aria-label="..."/>
 						</span>
 						<label type="text" class="form-control"   aria-label="...">Copy Count Number</label>
-					</div><!-- /input-group -->
+					</div>
 				</div>
 			</div>
+
+
+
 
 			<div class="row" style="margin-top: 8px">
 				<div class="col-lg-6">
 					<div class="input-group">
 						<input type="text" class="form-control" ng-model="dcbiCtrl.gene" placeholder="Gene ID ..."/>
 						<span class="input-group-btn">
-							<button class="btn btn-default" type="button" ng-click="dcbiCtrl.makeRequest()">Go</button>
+							<button class="btn btn-default" type="button" ng-disabled="!dcbiCtrl.gene" ng-click="dcbiCtrl.createRequest()">Go</button>
 						</span>
 					</div>
 				</div>
 			</div>
+
+
+
 			<div class="row" style="margin-top: 16px">
 				<div class="col-lg-6">
 					<text-Tool  inheritedgene="dcbiCtrl.gene"></text-Tool>
 				</div>
 			</div>
-			<!--<div class="row" style="margin-top: 16px">
-				<div class="col-lg-6">
-					<bar-Chart  inheritedgene="dcbiCtrl.gene"></bar-Chart>
+
+			<div class="row" style="margin-top: 16px">
+				<div class="col-lg-6"
+					bar-Chart=""  inheritedgene="dcbiCtrl.gene" data="dcbiCtrl.dataService.copyNumberData">
 				</div>
-			</div>-->
+			</div>
 		</div>
 	</div>
 
@@ -60,8 +93,7 @@
 
 	<script type="text/javascript" src="node_modules/angular/angular.min.js"></script>
 	<script type="text/javascript" src="node_modules/lodash/dist/lodash.js"></script>
-	<script type="text/javascript" src="node_modules/d3/build/d3.js"></script>
-	<script type="text/javascript" src="node_modules/d3-scale/build/d3-scale.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.js"></script>
 	<script type="text/javascript" src="dist/dcbi.js"></script>
 </body>
 </html>

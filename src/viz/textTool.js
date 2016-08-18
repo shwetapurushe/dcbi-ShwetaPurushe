@@ -31,5 +31,6 @@
 	{
 		var ttController = this;
 		ttController.dataService = dataService;
+
 	}
 })();

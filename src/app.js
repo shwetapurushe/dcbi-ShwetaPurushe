@@ -10,21 +10,37 @@
 								'dcbiApp.viz'
 	]);
 
+	//using the value provider recipe
+	angular.module('dcbiApp').value("MUTATION", 'mutation');
+	angular.module('dcbiApp').value("CCN", 'ccn');
+	angular.module('dcbiApp').value("BOTH", 'both');
+
+
+
 	//main app controller (this is the parent of all controllers)
 	angular.module('dcbiApp').controller('dcbiAppController', dcbiAppController);
 
-	dcbiAppController.$inject = ['queryService'];
-	function dcbiAppController(queryService)
+	dcbiAppController.$inject = ['$scope','dataService', 'queryService', 'MUTATION', 'CCN', 'BOTH'];
+	function dcbiAppController($scope,dataService,queryService, MUTATION, CCN, BOTH)
 	{
 		var dcbiCtrl = this;
+		dcbiCtrl.dataService = dataService;
 
 		dcbiCtrl.gene = "";//empty string uninitiated
-		dcbiCtrl.type = "mutation";
-		dcbiCtrl.makeRequest = makeRequest;
 
-		function makeRequest ()
+		dcbiCtrl.createRequest = createRequest;
+
+		function createRequest ()
 		{
-			queryService.makeRequest(dcbiCtrl.gene,dcbiCtrl.type);
+			/*var type;
+			if(dcbiCtrl.mutation && !dcbiCtrl.ccn)
+				type = MUTATION;
+			else if (dcbiCtrl.ccn && !dcbiCtrl.mutation)
+				type=CCN;
+			else
+				type = BOTH;*/
+
+			queryService.createRequest(dcbiCtrl.gene,dcbiCtrl.type);
 		}
 
 	}

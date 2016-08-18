@@ -7,8 +7,8 @@
 	angular.module('dcbiApp.data').service('dataService',dataService);
 
 
-	dataService.$inject = ['$q'];
-	function dataService ($q){
+	dataService.$inject = ['$q', '$rootScope', 'MUTATION', 'CCN'];
+	function dataService ($q, $rootScope, MUTATION, CCN){
 		var that = this;
 		that.mutationMetrics;
 		that.copyNumberData;
@@ -17,9 +17,7 @@
 		* */
 		that.parseDataToObject = function(tabbedFormat,type)
 		{
-			//var deferred = $q.defer();
 
-			console.log(tabbedFormat,type);
 			var geneCollection = [];//flushing out for new loops
 
 			//new lines//TODO figure out a way not to hard code this
@@ -38,29 +36,24 @@
 				geneCollection[i] = obj;
 			}
 
-			if(type == "mutation")
+			if(type == MUTATION)
 			{
 				that.mutationMetrics  = {
 					validMutations : _.filter(geneCollection, function(o){return !o.value.toString().match("NaN"); }),
 					allGenes: geneCollection
 				};
-			}else if(type == "CCN"){
+			}else if(type == CCN)
+			{
 				// todo: rather than multiple filter use single forloop to collect these information
 				that.copyNumberData  = {
 					deletedSingleCopy : _.filter(geneCollection, function(o){return o.value.toString().match("-1"); }),
 					deletedBothCopies : _.filter(geneCollection, function(o){return o.value.toString().match("-2"); }),
-					gainedBothCopies : _.filter(geneCollection, function(o){return o.value.toString().match("2"); }),
 					gainedSingleCopy : _.filter(geneCollection, function(o){return o.value.toString().match("1"); }),
+					gainedBothCopies : _.filter(geneCollection, function(o){return o.value.toString().match("2"); }),
 					noChange : _.filter(geneCollection, function(o){return o.value.toString().match("NA"); }),
 					allGenes: geneCollection
 				};
 			}
-
-
-			//deferred.resolve(mutationMetrics);
-
-			//return deferred.promise;
-
 		}
 	}
 })();
