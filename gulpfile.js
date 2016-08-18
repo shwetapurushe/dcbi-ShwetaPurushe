@@ -11,14 +11,6 @@ var gulp = require('gulp');
 //including the concat plugin
 var concat = require('gulp-concat');
 
-//defining the concat task
-
-/*gulp.task('copyIndex', function(){
-	return gulp.src('index.html')
-		.pipe(concat('index.html'))
-		.pipe(gulp.dest('dist'));
-});*/
-
 gulp.task('copy', function(){
 	 gulp.src('img/*.png')
 	.pipe(gulp.dest('dist/img/'));
