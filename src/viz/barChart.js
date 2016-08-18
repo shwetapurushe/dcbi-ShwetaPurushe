@@ -4,7 +4,7 @@
 //angular directive for a bar chart
 (function(){
 	"use strict";
-	angular.module('dcbiApp.viz', []);//creating the vuz module
+	angular.module('dcbiApp.viz', []);//creating the viz module
 
 	angular.module('dcbiApp.viz').directive('barChart', barChart);
 
@@ -24,24 +24,6 @@
 				var mydata;
 				var dom_element_to_append_to = document.getElementById('BarChart');
 
-				/*mydata = [{
-					label: 'hello',
-					value: 56
-				},
-				{
-					label:'shweta',
-					value:45
-				}];*/
-
-				/*config = {
-					data:dataService.copyNumberData,
-					container : dom_element_to_append_to
-				};
-
-				var bc = new window.d3_viz.BarChart();//create
-				bc.initialize(config);//initialize
-				//bc.render();//render*/
-
 				scope.$watch(function(){
 					return scope.data;
 				}, function(){
@@ -60,9 +42,6 @@
 							}
 						}
 
-						console.log("calc", calculatedData);
-
-
 						var config = {
 							data:calculatedData,
 							container : dom_element_to_append_to
@@ -77,11 +56,4 @@
 		}//the directive definiton object
 	}
 
-
-	barChartController.$inject = ['$scope', 'dataService'];
-	function barChartController ($scope, dataService)
-	{
-		var bcController = this;
-
-	}
 })();

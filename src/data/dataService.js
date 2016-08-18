@@ -20,15 +20,15 @@
 
 			var geneCollection = [];//flushing out for new loops
 
-			//new lines//TODO figure out a way not to hard code this
+			//new lines//TODO figure out a way not to hard code indices
 			var lines = tabbedFormat.split('\n');
 			var dataType = lines[0];
 			var metadata = lines[1];
 			var geneIds = lines[2].split('\t');
 			var values = lines[3].split('\t');
 
-			var geneCounter = geneIds.length;
-			for(var i = 0; i < geneCounter ; i++)
+			var geneCount = geneIds.length;
+			for(var i = 0; i < geneCount ; i++)
 			{
 				var obj = {};
 				obj.key = geneIds[i];
@@ -44,6 +44,7 @@
 				};
 			}else if(type == CCN)
 			{
+
 				// todo: rather than multiple filter use single forloop to collect these information
 				that.copyNumberData  = {
 					deletedSingleCopy : _.filter(geneCollection, function(o){return o.value.toString().match("-1"); }),

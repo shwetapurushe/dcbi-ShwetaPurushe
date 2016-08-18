@@ -47,11 +47,11 @@ if(!this.d3_viz){
 
 	//initializes the bar chart
 	p.initialize = function(config){
-		console.log('data', config.data);
+
 		this._container = config.container;
 		this._data = config.data;
 
-		this._margin =  {top: 50, right: 200, bottom: 50, left: 50};
+		this._margin =  {top: 50, right: 50, bottom: 50, left: 50};
 
 		this._width = this._container.offsetWidth - this._margin.left;
 		this._height = this._container.offsetHeight == 0 ? 200 : this._container.offsetHeight - this._margin.top;

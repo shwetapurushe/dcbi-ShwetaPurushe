@@ -41,11 +41,13 @@ if(!this.d3_viz){
 	//initializes the heat map
 	p.initialize = function(config){
 
-		this._margin =  {top: 50, right: 200, bottom: 50, left: 50};
+		//console.log("heatMap", config.data);
+
+		this._margin =  {top: 50, right: 100, bottom: 50, left: 50};
 		this._container = config.container;
 
 		this._width = this._container.offsetWidth - this._margin.left;
-		this._height = this._container.offsetHeight - this._margin.top;
+		this._height = this._container.offsetHeight == 0 ? 500 : this._container.offsetHeight - this._margin.top;
 
 		//original SVG
 		this._heatMapSvg = d3.select(this._container).append("svg")
@@ -111,7 +113,8 @@ if(!this.d3_viz){
 			{
 				return d.map(function(a)
 				{
-					return {value: a, row: i};} ) ;
+					return {value: a, row: i};
+				});
 			})//returning a key function
 			.enter().append("svg:rect")
 			.attr("x", function(d, i) {  return hmObj._rowScale(i); })
@@ -130,7 +133,7 @@ if(!this.d3_viz){
 	};
 
 	//sets the color of the heat map
-	p.setColor = function(){//to parameterize color scales
+		p.setColor = function(){//to parameterize color scales
 		var colorLow = 'green', colorMed = 'yellow', colorHigh = 'red';
 
 		this._colorScale = d3.scale.linear()
