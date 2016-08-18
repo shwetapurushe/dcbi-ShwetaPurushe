@@ -10,14 +10,16 @@
 	function textTool ()
 	{
 		return {
-			restrict :'E',
+			restrict :'EA',
 			templateUrl: 'src/viz/textToolPartial.html',
 			scope:{
-				inheritedgene :'='
+				inheritedgene :'=',
+				mutationmetrics:'=',
+				copynumberdata:'='
 			},
-			controller : textToolController,
+			/*controller : textToolController,
 			controllerAs : 'ttController',
-			bindToController: 'true',
+			bindToController: 'true',*/
 			link :function ()
 			{
 
@@ -26,11 +28,11 @@
 	}
 
 
-	textToolController.$inject = ['$scope','dataService'];
+	/*textToolController.$inject = ['$scope','dataService'];
 	function textToolController ($scope, dataService)
 	{
 		var ttController = this;
 		ttController.dataService = dataService;
 
-	}
+	}*/
 })();
