@@ -31,6 +31,7 @@
 			for(var i = 0; i < geneCount ; i++)
 			{
 				var obj = {};
+				obj.id=i;
 				obj.key = geneIds[i];
 				obj.value = values[i];
 				geneCollection[i] = obj;

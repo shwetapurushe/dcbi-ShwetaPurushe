@@ -8,29 +8,24 @@ if(!this.d3_viz){
 	this.d3_viz = {};
 }
 
-
-
 (function(){
 
-	function HeatMap (){
+	function HeatMap ()
+	{
 		this._container;
 		this._margin;
 		this._width;
 		this._height;
 		this._heatMapSvg;
 
-		this._colScale;
-		this._rowScale;
-		this._rowObjects;
-		this._rowCells;
+		this._y;
+		this._x;
 
 
-		this._colorRamp;
 		this._colorScale;
 		this._toolTip;
 
 		this._data;
-		this._labels;
 	};
 
 	var p = HeatMap.prototype;
@@ -41,34 +36,53 @@ if(!this.d3_viz){
 	//initializes the heat map
 	p.initialize = function(config){
 
-		//console.log("heatMap", config.data);
-
-		this._margin =  {top: 50, right: 100, bottom: 50, left: 50};
 		this._container = config.container;
+		this._data = config.data;
 
-		this._width = this._container.offsetWidth - this._margin.left;
-		this._height = this._container.offsetHeight == 0 ? 500 : this._container.offsetHeight - this._margin.top;
+		this._margin =  {top: 10, right: 10, bottom: 20, left: 100};
+
+		this._width = this._container.offsetWidth - this._margin.left - this._margin.right;
+		this._height = this._container.offsetHeight == 0 ? this._data.length * 10 : this._container.offsetHeight - this._margin.top - this._margin.bottom;
 
 		//original SVG
 		this._heatMapSvg = d3.select(this._container).append("svg")
-			.attr("width", this._width )
-			.attr("height",this._height );
+			.attr("width", this._width + this._margin.left + this._margin.right)
+			.attr("height",this._height  + this._margin.top + this._margin.bottom)
+			.append("g")
+			.attr("transform", "translate(" + this._margin.left + "," + this._margin.top + ")");
 
-		this._data = config.data;
-		this._labels = config.labels;
 
 		// Scaling Functions
-		this._rowScale = d3.scale.linear().range([0, this._width/1.25]).domain([0,this._data.length]);
+		this._x = d3.scale.linear().range([0, this._width]);
+		this._y = d3.scale.linear().range([ this._height,0]);
 
-		this._colScale = d3.scale.linear().range([0, this._height/1.25]).domain([0,this._data.length]);
+		//todo add error checking to ensure, what we get here is numeric columns not string columns
+		// Compute the scale domains.
+		this._x.domain([d3.min(this._data, function(d) { return d.value; }) , d3.max(this._data, function(d) { return d.value; }) ]);
+		this._y.domain(d3.extent(this._data, function(d) { return d.id; }));
 
-		//toolTip
-		this._toolTip = d3.select(this._container)
-			.append("div")
-			.style("visibility", "hidden")
-			.attr("class", "toolTip")
-			.text("");
+		var    yStep = 1;
+		var    xStep = 1;
+		this._x.domain([this._x.domain()[0] - xStep, this._x.domain()[1] + xStep]);
+		this._y.domain([this._y.domain()[0] , this._y.domain()[1] - yStep ]);
+
+		this._xAxis = d3.svg.axis().scale(this._x).orient("bottom").ticks(5);
+		this._yAxis = d3.svg.axis().scale(this._y)
+			.orient("left")
+			.ticks(this._data.length -1)
+			.tickFormat(function (col) {
+				var record = this._data[col];
+				var label = record ? record.key : '';
+				return label;
+			}.bind(this));
+
+		this._colorScale = d3.scale.linear()
+			.domain([-2,-1,0,1, 2])//TODO parameterize this according to the matrix
+			.range(["red", "orange", "yellow","lightgreen","green"]);
+
 	};
+
+
 
 	/**
 	 * function to draw a heatmap
@@ -76,68 +90,64 @@ if(!this.d3_viz){
 	 */
 	p.render = function(){
 
-		var hmObj = this;
+		var svg = this._heatMapSvg;
+		var x = this._x;
+		var y = this._y;
+		var color = this._colorScale;
+		var data = this._data;
+		var xStep = 1,
+			yStep = 1;
 
-		if(!hmObj._heatMapSvg){
-			console.log("Heat Map still initializing");
+		if(!svg){
 			setTimeout(p.render, 100);
 		}
 
-		this.setColor();
 
 		// remove all previous items before render
-		if(hmObj._heatMapSvg)
-			hmObj._heatMapSvg.selectAll('*').remove();
+		if(svg)
+			svg.selectAll('*').remove();
 		else
 			return;
 
 
-		//row creation
-		hmObj._rowObjects = hmObj._heatMapSvg.selectAll(".row")//.row is a predefined grid class
-			.data(hmObj._data)
-			.enter().append("svg:g")
-			.attr("transform", "translate(" + hmObj._margin.right + "," + hmObj._margin.bottom + ")")
-			.attr("class", "row");
+		svg.selectAll(".tile")
+			.data(data)
+			.enter().append("rect")
+			.attr("class", "tile")
+			.attr("x",function(d) { return x(d.value); } )
+			.attr("y", function(d) { return y(d.id + yStep); })
+			.attr("width", x(xStep) - x(0))
+			.attr("height",  y(0) - y(yStep))
+			.style("fill", function(d) { return color(d.value);});
 
-		//appending text for row
-		hmObj._rowObjects.append("text")
-			.attr("x", -1)
-			.attr("y", function(d, i) { return hmObj._colScale(i); })
-			.attr("dy", "0.25")
-			.attr("fill", 'darkOrange')
+		// Add an x-axis with label.
+		svg.append("g")
+			.attr("class", "x axis")
+			.attr("transform", "translate(0," + this._height + ")")
+			.call(this._xAxis)
+			.append("text")
+			.attr("class", "label")
+			.attr("x", this._width)
+			.attr("y", -6)
 			.attr("text-anchor", "end")
-			.text(function(d, i) { return hmObj._labels[i]; });
+			.text("CCN");
 
-		hmObj._rowCells = hmObj._rowObjects.selectAll(".cell")
-			.data(function (d,i)
-			{
-				return d.map(function(a)
-				{
-					return {value: a, row: i};
-				});
-			})//returning a key function
-			.enter().append("svg:rect")
-			.attr("x", function(d, i) {  return hmObj._rowScale(i); })
-			.attr("y", function(d, i) { return hmObj._colScale(d.row); })
-			.attr("width", hmObj._rowScale(1))
-			.attr("height", hmObj._colScale(1))
-			.style("fill", function(d) { return hmObj._colorScale(d.value);})
-			.style('stroke', "black")
-			.style('stroke-width', 1)
-			.style('stroke-opacity', 0)
-			.on('mouseover', function(d){ hmObj._toolTip.style('visibility', 'visible' ).text(d.value);
-				d3.select(this).style('stroke-opacity', 1);})
-			.on("mousemove", function(){return hmObj._toolTip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
-			.on('mouseout', function(){ hmObj._toolTip.style('visibility', 'hidden');
-				d3.select(this).style('stroke-opacity', 0);});
+		// Add a y-axis with label.
+		svg.append("g")
+			.attr("class", "y axis")
+			.call(this._yAxis)
+			.append("text")
+			.attr("class", "label")
+			.attr("y", 6)
+			.attr("dy", ".71em")
+			.attr("text-anchor", "end")
+			.attr("transform", "rotate(-90)")
+			.text("Gene ID");
+
+
+
+
 	};
 
-	//sets the color of the heat map
-		p.setColor = function(){//to parameterize color scales
-		var colorLow = 'green', colorMed = 'yellow', colorHigh = 'red';
 
-		this._colorScale = d3.scale.linear()
-			.domain([0, 5, 10])//TODO parameterize this according to the matrix
-			.range([colorLow, colorMed, colorHigh]);
-	};
 })();
