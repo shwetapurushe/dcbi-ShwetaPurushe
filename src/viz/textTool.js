@@ -11,7 +11,7 @@
 	{
 		return {
 			restrict :'EA',
-			templateUrl: 'src/viz/textToolPartial.html',
+			templateUrl: 'textToolPartial.html',
 			scope:{
 				inheritedgene :'=',
 				mutationmetrics:'=',

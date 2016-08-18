@@ -11,7 +11,7 @@
 	{
 		return {
 			restrict :'EA',
-			templateUrl: 'src/viz/heatMapPartial.html',
+			templateUrl: 'heatMapPartial.html',
 			scope:{
 				inheritedgene :'=',
 				data:'='

@@ -12,7 +12,7 @@
 	{
 		return {
 			restrict :'EA',
-			templateUrl: 'src/viz/barChartPartial.html',
+			templateUrl: 'barChartPartial.html',
 			scope:{
 				inheritedgene :'=',
 				data:'='
