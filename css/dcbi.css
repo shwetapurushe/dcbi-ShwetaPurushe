@@ -1,10 +1,10 @@
 
 .bar {
-	fill: steelblue;
+	fill: #4682b4;
 }
 
 .bar:hover {
-	fill: brown;
+	fill: #51a52b;
 }
 
 .axis {

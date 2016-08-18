@@ -17,14 +17,12 @@
   },
   "homepage": "https://github.com/shwetapurushe/dcbi-ShwetaPurushe#readme",
   "devDependencies": {
-    "angular": "^1.3.20",
-    "bootstrap": "^3.3.7",
     "gulp": "^3.9.1",
-    "gulp-concat": "^2.6.0",
-    "lodash": "^4.15.0"
+    "gulp-concat": "^2.6.0"
   },
   "dependencies": {
-    "d3": "^4.2.2",
-    "gulp": "^3.9.1"
+	"angular": "^1.3.20",
+	"bootstrap": "^3.3.7"
   }
+
 }
