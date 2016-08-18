@@ -20,8 +20,8 @@
 	//main app controller (this is the parent of all controllers)
 	angular.module('dcbiApp').controller('dcbiAppController', dcbiAppController);
 
-	dcbiAppController.$inject = ['$scope','dataService', 'queryService', 'MUTATION', 'CCN', 'BOTH'];
-	function dcbiAppController($scope,dataService,queryService, MUTATION, CCN, BOTH)
+	dcbiAppController.$inject = ['$scope','dataService', 'queryService'];
+	function dcbiAppController($scope,dataService,queryService)
 	{
 		var dcbiCtrl = this;
 		dcbiCtrl.dataService = dataService;
@@ -32,14 +32,6 @@
 
 		function createRequest ()
 		{
-			/*var type;
-			if(dcbiCtrl.mutation && !dcbiCtrl.ccn)
-				type = MUTATION;
-			else if (dcbiCtrl.ccn && !dcbiCtrl.mutation)
-				type=CCN;
-			else
-				type = BOTH;*/
-
 			queryService.createRequest(dcbiCtrl.gene,dcbiCtrl.type);
 		}
 

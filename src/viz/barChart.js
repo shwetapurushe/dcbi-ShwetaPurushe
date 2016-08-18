@@ -17,7 +17,7 @@
 				inheritedgene :'=',
 				data:'='
 			},
-			controller : barChartController,
+			//controller : barChartController,
 			link :function (scope, elem ,attrs)
 			{
 				var config;
