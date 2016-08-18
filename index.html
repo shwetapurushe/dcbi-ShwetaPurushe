@@ -55,7 +55,7 @@
 							<span class="input-group-addon">
 								<input type="radio" name='type' ng-model="dcbiCtrl.type" value="ccn" aria-label="..."/>
 							</span>
-							<label type="text" class="form-control"   aria-label="...">Copy Count Number</label>
+							<label type="text" class="form-control"   aria-label="...">Copy Count Alteration</label>
 						</div>
 					</div>
 				</div>
@@ -77,7 +77,8 @@
 
 				<div class="row" style="margin-top: 16px">
 					<div class="col-lg-12"
-						text-Tool=""    inheritedgene="dcbiCtrl.gene"
+						text-Tool=""    type="dcbiCtrl.type"
+						                inheritedgene="dcbiCtrl.gene"
 										mutationmetrics="dcbiCtrl.dataService.mutationMetrics"
 										copynumberdata="dcbiCtrl.dataService.copyNumberData">
 					</div>

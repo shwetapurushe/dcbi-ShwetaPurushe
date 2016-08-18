@@ -15,24 +15,13 @@
 			scope:{
 				inheritedgene :'=',
 				mutationmetrics:'=',
-				copynumberdata:'='
+				copynumberdata:'=',
+				type:'='
 			},
-			/*controller : textToolController,
-			controllerAs : 'ttController',
-			bindToController: 'true',*/
 			link :function ()
 			{
 
 			}
 		}//the directive definiton object
 	}
-
-
-	/*textToolController.$inject = ['$scope','dataService'];
-	function textToolController ($scope, dataService)
-	{
-		var ttController = this;
-		ttController.dataService = dataService;
-
-	}*/
 })();
